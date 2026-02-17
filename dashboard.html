@@ -26,11 +26,6 @@
       <p id="registrarsAssessed" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
     </div>
 
-    <div style="background:white; padding:30px; border-radius:12px; width:260px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
-      <h4>Independent Performances</h4>
-      <p id="independentPerformances" style="font-size:36px; font-weight:bold; color:#b00020;">--</p>
-    </div>
-
     <div style="background:white; padding:30px; border-radius:12px; width:240px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
       <h4>Total Registrars</h4>
       <p id="totalRegistrars" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
@@ -75,7 +70,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
       document.getElementById("totalAssessments").innerText = rows[0].c[1].v;
       document.getElementById("registrarsAssessed").innerText = rows[1].c[1].v;
-      document.getElementById("independentPerformances").innerText = rows[2].c[1].v;
       document.getElementById("totalRegistrars").innerText = rows[3].c[1].v;
       document.getElementById("outstandingRegistrars").innerText = rows[4].c[1].v;
     });
