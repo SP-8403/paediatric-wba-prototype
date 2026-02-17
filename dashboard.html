@@ -18,17 +18,17 @@
 
     <div style="background:white; padding:30px; border-radius:12px; width:260px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
       <h4>Total Assessments</h4>
-      <p style="font-size:36px; font-weight:bold; color:#0f2f4f;">47</p>
+      <p id="totalAssessments" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
     </div>
 
     <div style="background:white; padding:30px; border-radius:12px; width:260px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
       <h4>Average Entrustment</h4>
-      <p style="font-size:36px; font-weight:bold; color:#0f2f4f;">Level 3.2</p>
+      <p id="averageEntrustment" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
     </div>
 
     <div style="background:white; padding:30px; border-radius:12px; width:260px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
       <h4>Outstanding Assessments</h4>
-      <p style="font-size:36px; font-weight:bold; color:#b00020;">5</p>
+      <p id="outstandingAssessments" style="font-size:36px; font-weight:bold; color:#b00020;">--</p>
     </div>
 
   </div>
@@ -54,6 +54,22 @@
   <p>Department of Paediatrics and Child Health | University of Cape Town</p>
   <p>© 2026</p>
 </footer>
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+
+  fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQutQlx9u_pElM18zKjIJxOIOsVK_MypBrguYjI8YxiIAaVnmnsWFBGrBCcNE4_okyCeaDKm99-OxlN/gviz/tq?tqx=out:json&gid=2044622508")
+    .then(res => res.text())
+    .then(text => {
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      const rows = json.table.rows;
+
+      document.getElementById("totalAssessments").innerText = rows[0].c[1].v;
+      document.getElementById("averageEntrustment").innerText = rows[1].c[1].v;
+      document.getElementById("outstandingAssessments").innerText = rows[2].c[1].v;
+    });
+
+});
+</script>
 
 </body>
 </html>
