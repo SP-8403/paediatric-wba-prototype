@@ -57,7 +57,7 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 
-  fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQutQlx9u_pElM18zKjIJxOIOsVK_MypBrguYjI8YxiIAaVnmnsWFBGrBCcNE4_okyCeaDKm99-OxlN/gviz/tq?tqx=out:json&gid=2044622508")
+  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substr(47).slice(0, -2));
