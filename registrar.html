@@ -32,14 +32,12 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 
-  // 1️⃣ Get the selected registrar name from the URL
   const params = new URLSearchParams(window.location.search);
   const selectedName = params.get("name") || "Unknown Registrar";
 
-  // Put the name in the page
-  document.getElementById("registrarName").innerText = selectedName;
+  document.getElementById("registrarName").innerText =
+    selectedName + " – EPA Observations";
 
-  // 2️⃣ Fetch live Form Responses
   fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
     .then(res => res.text())
     .then(text => {
@@ -48,26 +46,57 @@ window.addEventListener("DOMContentLoaded", function() {
       const rows = json.table.rows;
 
       let html = "";
+      let count = 0;
 
       rows.forEach(row => {
 
-        const traineeName = row.c[2]?.v;  // Column C = Name
-        const date = row.c[5]?.v;         // Column F = Date
-        const hospital = row.c[8]?.v;     // Column I = Hospital
+        const traineeName = row.c[2]?.v;
+        const rawDate = row.c[5]?.v;
+        const hospital = row.c[8]?.v;
 
-        // Only include rows for this registrar
         if (traineeName === selectedName) {
+
+          count++;
+
+          let formattedDate = "–";
+
+          if (rawDate && rawDate.startsWith("Date")) {
+            const parts = rawDate
+              .replace("Date(", "")
+              .replace(")", "")
+              .split(",");
+            formattedDate =
+              parts[2] + "/" + (parseInt(parts[1]) + 1) + "/" + parts[0];
+          }
+
           html += `
-            <div style="background:#f4f7fa; padding:20px; margin-bottom:15px; border-radius:8px;">
-              <strong>Date:</strong> ${date || "–"}<br>
-              <strong>Hospital:</strong> ${hospital || "–"}
+            <div style="
+              background:white;
+              padding:25px;
+              margin-bottom:25px;
+              border-radius:12px;
+              box-shadow:0 8px 20px rgba(0,0,0,0.08);
+              max-width:700px;
+            ">
+              <div style="
+                font-size:18px;
+                font-weight:bold;
+                color:#002b5c;
+                margin-bottom:10px;
+              ">
+                EPA Observation ${count}
+              </div>
+
+              <div><strong>Date:</strong> ${formattedDate}</div>
+              <div><strong>Hospital:</strong> ${hospital || "–"}</div>
             </div>
           `;
         }
+
       });
 
-      if (html === "") {
-        html = "<p>No assessments recorded yet for this registrar.</p>";
+      if (count === 0) {
+        html = "<p>No EPA observations recorded yet for this registrar.</p>";
       }
 
       document.getElementById("assessmentList").innerHTML = html;
