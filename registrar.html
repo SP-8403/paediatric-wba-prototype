@@ -40,7 +40,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
   const container = document.getElementById("assessmentList");
 
-  // Helper to format Google Sheets dates
   function formatGSDate(raw) {
     if (!raw || !raw.startsWith("Date")) return "–";
     const parts = raw.replace("Date(", "").replace(")", "").split(",");
@@ -72,16 +71,18 @@ window.addEventListener("DOMContentLoaded", function() {
       let count = 0;
 
       rows.forEach(row => {
-        const traineeName = row.c[2]?.v; // Column C
-        const rawDate = row.c[5]?.v;     // Column F
-        const hospital = row.c[8]?.v;    // Column I
-        const globalEntrustment = row.c[32]?.v; // Column AG
+
+        const traineeName = row.c[2]?.v;
+        const rawDate = row.c[5]?.v;
+        const hospital = row.c[8]?.v;
+        const globalEntrustment = row.c[32]?.v;
 
         if (
           traineeName &&
           traineeName.trim().toLowerCase() ===
             selectedName.trim().toLowerCase()
         ) {
+
           count++;
           const formattedDate = formatGSDate(rawDate);
 
@@ -93,14 +94,32 @@ window.addEventListener("DOMContentLoaded", function() {
               border-radius:10px;
               box-shadow:0 6px 18px rgba(0,0,0,0.07);
             ">
-              <div style="font-weight:bold; color:#002b5c;">
-                Observation ${count}
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:bold; color:#002b5c;">
+                  Observation ${count}
+                </div>
+
+                <div style="
+                  background:#002b5c;
+                  color:white;
+                  padding:6px 12px;
+                  border-radius:20px;
+                  font-size:12px;
+                ">
+                  Level ${globalEntrustment || "–"}
+                </div>
               </div>
-              <div><strong>Date:</strong> ${formattedDate}</div>
-              <div><strong>Hospital:</strong> ${hospital || "–"}</div>
+
+              <div style="margin-top:15px;">
+                <strong>Date:</strong> ${formattedDate}<br>
+                <strong>Hospital:</strong> ${hospital || "–"}
+              </div>
+
             </div>
           `;
         }
+
       });
 
       if (count > 0) {
@@ -111,6 +130,7 @@ window.addEventListener("DOMContentLoaded", function() {
           ${sectionHTML}
         `;
       }
+
     });
 
     if (!overallHTML) {
