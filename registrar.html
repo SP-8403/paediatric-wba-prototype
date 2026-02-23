@@ -46,9 +46,9 @@ window.addEventListener("DOMContentLoaded", function() {
     return `${parts[2]}/${parseInt(parts[1]) + 1}/${parts[0]}`;
   }
 
-  function fetchEPA(gid, title) {
+  function fetchEPA(sheetID, gid, title) {
     return fetch(
-      `https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=${gid}`
+      `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&gid=${gid}`
     )
     .then(res => res.text())
     .then(text => {
@@ -58,19 +58,26 @@ window.addEventListener("DOMContentLoaded", function() {
   }
 
   Promise.all([
-    fetchEPA(25819344, "EPA 1 – Structured SBAR Handover"),
-    fetchEPA(287751304, "EPA 2 – Examination of the Newborn")
+    fetchEPA(
+      "16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk",
+      25819344,
+      "EPA 1 – Structured SBAR Handover"
+    ),
+    fetchEPA(
+      "1N6yqaBddbjXwK2b_nRlC7fycHSdGVBUt88083-YDJtw",
+      287751304,
+      "EPA 2 – Examination of the Newborn"
+    )
   ]).then(results => {
 
     let overallHTML = "";
 
     results.forEach(epa => {
 
-      const rows = epa.rows;
       let sectionHTML = "";
       let count = 0;
 
-      rows.forEach(row => {
+      epa.rows.forEach(row => {
 
         const traineeName = row.c[2]?.v;
         const rawDate = row.c[5]?.v;
