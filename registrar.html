@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registrar Portfolio | UCT DPCH WBA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Registrar EPA Portfolio</h1>
+  <p>UCT Department of Paediatrics and Child Health</p>
+</header>
+
+<section style="padding:40px;">
+  <h2 id="registrarName"></h2>
+  <div id="assessmentList"></div>
+</section>
+
+<section style="text-align:center; margin:40px;">
+  <a href="dashboard.html"
+     style="display:inline-block;
+            padding:12px 30px;
+            background:#002b5c;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+            font-weight:bold;">
+    ← Back to Dashboard
+  </a>
+</section>
+
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name");
+
+  document.getElementById("registrarName").innerText = name + " – EPA Observations";
+
+  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=0")
+    .then(res => res.text())
+    .then(text => {
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      const rows = json.table.rows;
+
+      let output = "<ul>";
+
+      rows.forEach(row => {
+        const traineeName = row.c[2]?.v; // Adjust if column differs
+        if (traineeName === name) {
+          const date = row.c[0]?.v;
+          output += `<li>Assessment Date: ${date}</li>`;
+        }
+      });
+
+      output += "</ul>";
+      document.getElementById("assessmentList").innerHTML = output;
+    });
+
+});
+</script>
+
+</body>
+</html>
