@@ -37,13 +37,27 @@
     </div>
 
   </div>
+  
 </section>
+<!-- Registrar Portfolio Section -->
+<section style="padding:60px 20px; background:#f8fafc;">
+  <h2 style="text-align:center; margin-bottom:30px;">Registrar Portfolio</h2>
 
-  <section style="text-align:center; margin:40px;">
-    <h3>Registrar Portfolio</h3>
-    <div id="registrarList"></div>
-  </section>
+  <div style="text-align:center; margin-bottom:30px;">
+    <input type="text" id="searchBox"
+      placeholder="Search registrar..."
+      style="padding:12px 20px; width:300px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+  </div>
 
+  <div id="registrarList"
+       style="display:grid;
+              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+              gap:20px;
+              max-width:1000px;
+              margin:auto;">
+  </div>
+</section>
+  
 <section style="text-align:center; margin:40px;">
   <a href="index.html"
      style="display:inline-block;
@@ -68,46 +82,68 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 
-  // 🔹 1. FETCH DASHBOARD TOTALS
+  // 1️⃣ FETCH DASHBOARD TOTALS
   fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substr(47).slice(0, -2));
       const rows = json.table.rows;
 
-      document.getElementById("totalAssessments").innerText = rows[0].c[1].v;
-      document.getElementById("registrarsAssessed").innerText = rows[1].c[1].v;
-      document.getElementById("totalRegistrars").innerText = rows[2].c[1].v;
-      document.getElementById("outstandingRegistrars").innerText = rows[3].c[1].v;
+      document.getElementById("totalAssessments").innerText = rows[0]?.c[1]?.v || "0";
+      document.getElementById("registrarsAssessed").innerText = rows[1]?.c[1]?.v || "0";
+      document.getElementById("totalRegistrars").innerText = rows[2]?.c[1]?.v || "0";
+      document.getElementById("outstandingRegistrars").innerText = rows[3]?.c[1]?.v || "0";
     });
 
-  // 🔹 2. FETCH REGISTRAR LIST
+  // 2️⃣ FETCH REGISTRAR LIST
   fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
     .then(res => res.text())
     .then(text => {
 
       const json = JSON.parse(text.substr(47).slice(0, -2));
       const rows = json.table.rows;
+      const registrarList = document.getElementById("registrarList");
 
-      let registrarHTML = "";
+      rows.forEach((row, index) => {
+        if (index === 0) return;
 
-      rows.forEach(row => {
         const name = row.c[0]?.v;
-        if (name) {
-          registrarHTML += `
-            <div style="margin:8px;">
-              <a href="registrar.html?name=${encodeURIComponent(name)}"
-                 style="color:#002b5c; font-weight:bold; text-decoration:none;">
-                 ${name}
-              </a>
-            </div>
-          `;
-        }
+        if (!name) return;
+
+        const card = document.createElement("div");
+        card.style.background = "white";
+        card.style.padding = "20px";
+        card.style.borderRadius = "12px";
+        card.style.boxShadow = "0 6px 15px rgba(0,0,0,0.08)";
+        card.style.textAlign = "center";
+        card.style.cursor = "pointer";
+        card.style.fontWeight = "bold";
+        card.style.color = "#002b5c";
+
+        card.innerText = name;
+
+        card.onclick = function() {
+          window.location.href =
+            "registrar.html?name=" + encodeURIComponent(name);
+        };
+
+        registrarList.appendChild(card);
       });
 
-      document.getElementById("registrarList").innerHTML = registrarHTML;
-
     });
+
+  // 3️⃣ SEARCH
+  const searchBox = document.getElementById("searchBox");
+
+  searchBox.addEventListener("input", function() {
+    const filter = searchBox.value.toLowerCase();
+    const cards = document.querySelectorAll("#registrarList div");
+
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      card.style.display = text.includes(filter) ? "block" : "none";
+    });
+  });
 
 });
 </script>
