@@ -36,72 +36,89 @@ window.addEventListener("DOMContentLoaded", function() {
   const selectedName = params.get("name") || "Unknown Registrar";
 
   document.getElementById("registrarName").innerText =
-    selectedName + " – EPA Observations";
+    selectedName + " – EPA Portfolio";
 
-  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
+  const container = document.getElementById("assessmentList");
+
+  // Helper to format Google Sheets dates
+  function formatGSDate(raw) {
+    if (!raw || !raw.startsWith("Date")) return "–";
+    const parts = raw.replace("Date(", "").replace(")", "").split(",");
+    return `${parts[2]}/${parseInt(parts[1]) + 1}/${parts[0]}`;
+  }
+
+  function fetchEPA(gid, title) {
+    return fetch(
+      `https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=${gid}`
+    )
     .then(res => res.text())
     .then(text => {
-
       const json = JSON.parse(text.substr(47).slice(0, -2));
-      const rows = json.table.rows;
+      return { title, rows: json.table.rows };
+    });
+  }
 
-      let html = "";
+  Promise.all([
+    fetchEPA(25819344, "EPA 1 – Structured SBAR Handover"),
+    fetchEPA(287751304, "EPA 2 – Examination of the Newborn")
+  ]).then(results => {
+
+    let overallHTML = "";
+
+    results.forEach(epa => {
+
+      const rows = epa.rows;
+      let sectionHTML = "";
       let count = 0;
 
       rows.forEach(row => {
+        const traineeName = row.c[2]?.v; // Column C
+        const rawDate = row.c[5]?.v;     // Column F
+        const hospital = row.c[8]?.v;    // Column I
 
-        const traineeName = row.c[2]?.v;
-        const rawDate = row.c[5]?.v;
-        const hospital = row.c[8]?.v;
-
-        if (traineeName === selectedName) {
-
+        if (
+          traineeName &&
+          traineeName.trim().toLowerCase() ===
+            selectedName.trim().toLowerCase()
+        ) {
           count++;
+          const formattedDate = formatGSDate(rawDate);
 
-          let formattedDate = "–";
-
-          if (rawDate && rawDate.startsWith("Date")) {
-            const parts = rawDate
-              .replace("Date(", "")
-              .replace(")", "")
-              .split(",");
-            formattedDate =
-              parts[2] + "/" + (parseInt(parts[1]) + 1) + "/" + parts[0];
-          }
-
-          html += `
+          sectionHTML += `
             <div style="
               background:white;
-              padding:25px;
-              margin-bottom:25px;
-              border-radius:12px;
-              box-shadow:0 8px 20px rgba(0,0,0,0.08);
-              max-width:700px;
+              padding:22px;
+              margin-bottom:18px;
+              border-radius:10px;
+              box-shadow:0 6px 18px rgba(0,0,0,0.07);
             ">
-              <div style="
-                font-size:18px;
-                font-weight:bold;
-                color:#002b5c;
-                margin-bottom:10px;
-              ">
-                EPA Observation ${count}
+              <div style="font-weight:bold; color:#002b5c;">
+                Observation ${count}
               </div>
-
               <div><strong>Date:</strong> ${formattedDate}</div>
               <div><strong>Hospital:</strong> ${hospital || "–"}</div>
             </div>
           `;
         }
-
       });
 
-      if (count === 0) {
-        html = "<p>No EPA observations recorded yet for this registrar.</p>";
+      if (count > 0) {
+        overallHTML += `
+          <h3 style="margin-top:40px; color:#002b5c;">
+            ${epa.title}
+          </h3>
+          ${sectionHTML}
+        `;
       }
-
-      document.getElementById("assessmentList").innerHTML = html;
-
     });
+
+    if (!overallHTML) {
+      overallHTML = "<p>No EPA observations recorded yet for this registrar.</p>";
+    }
+
+    container.innerHTML = overallHTML;
+
+  });
 
 });
 </script>
