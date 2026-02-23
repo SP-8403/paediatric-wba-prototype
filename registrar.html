@@ -32,29 +32,46 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 
+  // 1️⃣ Get the selected registrar name from the URL
   const params = new URLSearchParams(window.location.search);
-  const name = params.get("name");
+  const selectedName = params.get("name") || "Unknown Registrar";
 
-  document.getElementById("registrarName").innerText = name + " – EPA Observations";
+  // Put the name in the page
+  document.getElementById("registrarName").innerText = selectedName;
 
-  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=0")
+  // 2️⃣ Fetch live Form Responses
+  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
     .then(res => res.text())
     .then(text => {
+
       const json = JSON.parse(text.substr(47).slice(0, -2));
       const rows = json.table.rows;
 
-      let output = "<ul>";
+      let html = "";
 
       rows.forEach(row => {
-        const traineeName = row.c[2]?.v; // Adjust if column differs
-        if (traineeName === name) {
-          const date = row.c[0]?.v;
-          output += `<li>Assessment Date: ${date}</li>`;
+
+        const traineeName = row.c[2]?.v;  // Column C = Name
+        const date = row.c[5]?.v;         // Column F = Date
+        const hospital = row.c[8]?.v;     // Column I = Hospital
+
+        // Only include rows for this registrar
+        if (traineeName === selectedName) {
+          html += `
+            <div style="background:#f4f7fa; padding:20px; margin-bottom:15px; border-radius:8px;">
+              <strong>Date:</strong> ${date || "–"}<br>
+              <strong>Hospital:</strong> ${hospital || "–"}
+            </div>
+          `;
         }
       });
 
-      output += "</ul>";
-      document.getElementById("assessmentList").innerHTML = output;
+      if (html === "") {
+        html = "<p>No assessments recorded yet for this registrar.</p>";
+      }
+
+      document.getElementById("assessmentList").innerHTML = html;
+
     });
 
 });
