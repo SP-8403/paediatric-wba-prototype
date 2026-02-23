@@ -46,28 +46,38 @@ window.addEventListener("DOMContentLoaded", function() {
     return `${parts[2]}/${parseInt(parts[1]) + 1}/${parts[0]}`;
   }
 
-  function fetchEPA(sheetID, gid, title) {
+  function fetchEPA(spreadsheetId, gid, title, entrustmentColumnIndex) {
     return fetch(
-      `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&gid=${gid}`
+      `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&gid=${gid}`
     )
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substr(47).slice(0, -2));
-      return { title, rows: json.table.rows };
+      return {
+        title,
+        rows: json.table.rows,
+        entrustmentColumnIndex
+      };
     });
   }
 
   Promise.all([
+    // EPA 1
     fetchEPA(
       "16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk",
       25819344,
-      "EPA 1 – Structured SBAR Handover"
+      "EPA 1 – Structured SBAR Handover",
+      32  // EPA 1 Global Entrustment column
     ),
+
+    // EPA 2
     fetchEPA(
       "1N6yqaBddbjXwK2b_nRlC7fycHSdGVBUt88083-YDJtw",
       287751304,
-      "EPA 2 – Examination of the Newborn"
+      "EPA 2 – Examination of the Newborn",
+      41  // Column AP in EPA 2
     )
+
   ]).then(results => {
 
     let overallHTML = "";
@@ -82,12 +92,12 @@ window.addEventListener("DOMContentLoaded", function() {
         const traineeName = row.c[2]?.v;
         const rawDate = row.c[5]?.v;
         const hospital = row.c[8]?.v;
-        const globalEntrustment = row.c[32]?.v;
+        const globalEntrustment = row.c[epa.entrustmentColumnIndex]?.v;
 
         if (
           traineeName &&
           traineeName.trim().toLowerCase() ===
-            selectedName.trim().toLowerCase()
+          selectedName.trim().toLowerCase()
         ) {
 
           count++;
@@ -149,6 +159,7 @@ window.addEventListener("DOMContentLoaded", function() {
   });
 
 });
+</script>
 </script>
 
 </body>
