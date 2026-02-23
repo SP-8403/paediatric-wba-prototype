@@ -3,7 +3,9 @@
 <head>
   <title>Registrar Portfolio | UCT DPCH WBA</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <header>
@@ -11,9 +13,16 @@
   <p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
-<section style="padding:40px;">
+<section style="padding:40px; max-width:1000px; margin:auto;">
+  
   <h2 id="registrarName"></h2>
+
+  <!-- Entrustment Graph -->
+  <canvas id="entrustmentChart" height="100" style="margin-bottom:40px;"></canvas>
+
+  <!-- EPA Cards -->
   <div id="assessmentList"></div>
+
 </section>
 
 <section style="text-align:center; margin:40px;">
@@ -62,12 +71,13 @@ window.addEventListener("DOMContentLoaded", function() {
   }
 
   Promise.all([
+
     // EPA 1
     fetchEPA(
       "16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk",
       25819344,
       "EPA 1 – Structured SBAR Handover",
-      32  // EPA 1 Global Entrustment column
+      32
     ),
 
     // EPA 2
@@ -75,12 +85,13 @@ window.addEventListener("DOMContentLoaded", function() {
       "1N6yqaBddbjXwK2b_nRlC7fycHSdGVBUt88083-YDJtw",
       287751304,
       "EPA 2 – Examination of the Newborn",
-      41  // Column AP in EPA 2
+      41
     )
 
   ]).then(results => {
 
     let overallHTML = "";
+    let entrustmentData = [];
 
     results.forEach(epa => {
 
@@ -101,6 +112,11 @@ window.addEventListener("DOMContentLoaded", function() {
         ) {
 
           count++;
+
+          if (globalEntrustment) {
+            entrustmentData.push(parseInt(globalEntrustment));
+          }
+
           const formattedDate = formatGSDate(rawDate);
 
           sectionHTML += `
@@ -155,6 +171,34 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     container.innerHTML = overallHTML;
+
+    // Build Chart
+    if (entrustmentData.length > 0) {
+
+      new Chart(document.getElementById("entrustmentChart"), {
+        type: 'line',
+        data: {
+          labels: entrustmentData.map((_, i) => "Obs " + (i+1)),
+          datasets: [{
+            label: 'Entrustment Level',
+            data: entrustmentData,
+            borderColor: '#002b5c',
+            backgroundColor: 'rgba(0,43,92,0.1)',
+            tension: 0.3
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              min: 1,
+              max: 5,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+
+    }
 
   });
 
