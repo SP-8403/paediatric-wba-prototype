@@ -40,12 +40,8 @@
 </section>
 
   <section style="text-align:center; margin:40px;">
-    <h3>View Registrar Portfolio</h3>
-
-    <a href="registrar.html?name=Charl Botha">Charl Botha</a><br>
-    <a href="registrar.html?name=Zeenat Bull">Zeenat Bull</a><br>
-    <a href="registrar.html?name=Thomas Butler">Thomas Butler</a><br>
-
+    <h3>Registrar Portfolio</h3>
+    <div id="registrarList"></div>
   </section>
 
 <section style="text-align:center; margin:40px;">
@@ -68,9 +64,11 @@
   <p>Department of Paediatrics and Child Health | University of Cape Town</p>
   <p>© 2026</p>
 </footer>
+
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 
+  // 🔹 1. FETCH DASHBOARD TOTALS
   fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
     .then(res => res.text())
     .then(text => {
@@ -81,6 +79,34 @@ window.addEventListener("DOMContentLoaded", function() {
       document.getElementById("registrarsAssessed").innerText = rows[1].c[1].v;
       document.getElementById("totalRegistrars").innerText = rows[2].c[1].v;
       document.getElementById("outstandingRegistrars").innerText = rows[3].c[1].v;
+    });
+
+  // 🔹 2. FETCH REGISTRAR LIST
+  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
+    .then(res => res.text())
+    .then(text => {
+
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      const rows = json.table.rows;
+
+      let registrarHTML = "";
+
+      rows.forEach(row => {
+        const name = row.c[0]?.v;
+        if (name) {
+          registrarHTML += `
+            <div style="margin:8px;">
+              <a href="registrar.html?name=${encodeURIComponent(name)}"
+                 style="color:#002b5c; font-weight:bold; text-decoration:none;">
+                 ${name}
+              </a>
+            </div>
+          `;
+        }
+      });
+
+      document.getElementById("registrarList").innerHTML = registrarHTML;
+
     });
 
 });
