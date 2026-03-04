@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Supervisor Dashboard | UCT WBA</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Supervisor Dashboard</h1>
+<p>UCT Department of Paediatrics and Child Health</p>
+</header>
+
+<section style="padding:40px; max-width:1000px; margin:auto;">
+
+<h2>Assessment Activity</h2>
+
+<table style="width:100%; border-collapse:collapse;">
+
+<thead>
+<tr style="background:#002b5c; color:white;">
+<th style="padding:10px;">Supervisor</th>
+<th>Registrar</th>
+<th>EPA</th>
+<th>Date</th>
+<th>Entrustment</th>
+</tr>
+</thead>
+
+<tbody id="supervisorTable"></tbody>
+
+</table>
+
+</section>
+
+
+<script>
+
+fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
+
+.then(res => res.text())
+.then(text => {
+
+const json = JSON.parse(text.substr(47).slice(0,-2));
+const rows = json.table.rows;
+
+let html = "";
+
+rows.forEach(row => {
+
+const supervisor = row.c[7]?.v || "—";   // COLUMN H
+const registrar = row.c[2]?.v || "—";    // COLUMN C
+const date = row.c[5]?.v || "—";         // COLUMN F
+const entrustment = row.c[32]?.v || "—"; // COLUMN AG
+
+if(registrar === "—") return;
+
+html += `
+
+<tr style="border-bottom:1px solid #eee;">
+
+<td style="padding:10px;">${supervisor}</td>
+
+<td>
+<a href="registrar.html?name=${encodeURIComponent(registrar)}"
+style="color:#002b5c; font-weight:bold; text-decoration:none;">
+${registrar}
+</a>
+</td>
+
+<td>EPA 1</td>
+
+<td>${date}</td>
+
+<td>
+<span style="
+background:#002b5c;
+color:white;
+padding:5px 12px;
+border-radius:15px;
+font-size:12px;
+">
+Level ${entrustment}
+</span>
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("supervisorTable").innerHTML = html;
+
+});
+
+</script>
+
+</body>
+</html>
