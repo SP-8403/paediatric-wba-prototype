@@ -13,6 +13,7 @@
 <p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
+
 <section style="padding:60px 20px; background:#f8fafc;">
 
 <div style="
@@ -28,15 +29,17 @@ box-shadow:0 6px 20px rgba(0,0,0,0.08);
 Supervisor Assessment Activity
 </h2>
 
-<table style="width:100%; border-collapse:collapse;">
+<table style="width:100%; border-collapse:collapse; table-layout:fixed;">
 
 <thead>
 <tr style="background:#002b5c; color:white;">
-<th style="padding:12px;">Supervisor</th>
-<th>Registrar</th>
-<th>EPA</th>
-<th>Date</th>
-<th>Entrustment</th>
+
+<th style="padding:12px; width:25%;">Supervisor</th>
+<th style="width:25%;">Registrar</th>
+<th style="width:10%;">EPA</th>
+<th style="width:20%;">Date</th>
+<th style="width:20%;">Entrustment</th>
+
 </tr>
 </thead>
 
@@ -50,6 +53,7 @@ Supervisor Assessment Activity
 
 
 <section style="text-align:center; margin:40px;">
+
 <a href="dashboard.html"
 style="
 display:inline-block;
@@ -60,8 +64,11 @@ text-decoration:none;
 border-radius:8px;
 font-weight:bold;
 ">
+
 ← Back to Programme Dashboard
+
 </a>
+
 </section>
 
 
@@ -100,26 +107,27 @@ html += `
 
 <tr style="border-bottom:1px solid #f1f3f5;">
 
-<td style="padding:12px;">
+<td style="padding:12px; vertical-align:middle;">
 ${supervisor}
 </td>
 
-<td style="padding:12px;">
+<td style="padding:12px; vertical-align:middle;">
 <a href="registrar.html?name=${encodeURIComponent(registrar)}"
 style="color:#002b5c; font-weight:bold; text-decoration:none;">
 ${registrar}
 </a>
 </td>
 
-<td style="padding:16px;">
+<td style="padding:12px; vertical-align:middle;">
 EPA 1
 </td>
 
-<td style="padding:16px;">
+<td style="padding:12px; vertical-align:middle;">
 ${date}
 </td>
 
-<td style="padding:16px;">
+<td style="padding:12px; vertical-align:middle;">
+
 <span style="
 background:#0f7c82;
 color:white;
@@ -128,7 +136,11 @@ border-radius:20px;
 font-size:12px;
 font-weight:bold;
 ">
+
+Level ${entrustment}
+
 </span>
+
 </td>
 
 </tr>
