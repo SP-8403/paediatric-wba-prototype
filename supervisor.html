@@ -13,15 +13,26 @@
 <p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
-<section style="padding:40px; max-width:1000px; margin:auto;">
+<section style="padding:60px 20px; background:#f8fafc;">
 
-<h2>Assessment Activity</h2>
+<div style="
+max-width:1000px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+">
+
+<h2 style="text-align:center; margin-bottom:30px;">
+Supervisor Assessment Activity
+</h2>
 
 <table style="width:100%; border-collapse:collapse;">
 
 <thead>
 <tr style="background:#002b5c; color:white;">
-<th style="padding:10px;">Supervisor</th>
+<th style="padding:12px;">Supervisor</th>
 <th>Registrar</th>
 <th>EPA</th>
 <th>Date</th>
@@ -33,6 +44,24 @@
 
 </table>
 
+</div>
+
+</section>
+
+
+<section style="text-align:center; margin:40px;">
+<a href="dashboard.html"
+style="
+display:inline-block;
+padding:12px 30px;
+background:#002b5c;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+">
+← Back to Programme Dashboard
+</a>
 </section>
 
 
@@ -50,36 +79,52 @@ let html = "";
 
 rows.forEach(row => {
 
-const supervisor = row.c[7]?.v || "—";   // COLUMN H
-const registrar = row.c[2]?.v || "—";    // COLUMN C
-const date = row.c[5]?.v || "—";         // COLUMN F
-const entrustment = row.c[32]?.v || "—"; // COLUMN AG
+const supervisor = row.c[7]?.v || "—";   // Column H
+const registrar = row.c[2]?.v || "—";    // Column C
+const rawDate = row.c[5]?.v || "—";      // Column F
+const entrustment = row.c[32]?.v || "—"; // Column AG
 
 if(registrar === "—") return;
+
+
+/* Format Google Sheets date */
+let date = rawDate;
+
+if(rawDate && rawDate.startsWith("Date")){
+const parts = rawDate.replace("Date(","").replace(")","").split(",");
+date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
+}
+
 
 html += `
 
 <tr style="border-bottom:1px solid #eee;">
 
-<td style="padding:10px;">${supervisor}</td>
+<td style="padding:12px;">
+${supervisor}
+</td>
 
-<td>
+<td style="padding:12px;">
 <a href="registrar.html?name=${encodeURIComponent(registrar)}"
 style="color:#002b5c; font-weight:bold; text-decoration:none;">
 ${registrar}
 </a>
 </td>
 
-<td>EPA 1</td>
+<td style="padding:12px;">
+EPA 1
+</td>
 
-<td>${date}</td>
+<td style="padding:12px;">
+${date}
+</td>
 
-<td>
+<td style="padding:12px;">
 <span style="
 background:#002b5c;
 color:white;
-padding:5px 12px;
-border-radius:15px;
+padding:6px 12px;
+border-radius:20px;
 font-size:12px;
 ">
 Level ${entrustment}
@@ -97,6 +142,10 @@ document.getElementById("supervisorTable").innerHTML = html;
 });
 
 </script>
+
+</body>
+
+</html>
 
 </body>
 </html>
