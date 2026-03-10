@@ -102,7 +102,8 @@ const entrustment = row.c[32]?.v || "—"; // Column AG
 if(registrar === "—") return;
 
 /* Filter by supervisor */
-if(selectedSupervisor && supervisor !== selectedSupervisor) return;
+if(selectedSupervisor && !supervisor?.toLowerCase().includes(selectedSupervisor.toLowerCase())
+) return;
 
 /* Format date */
 let date = rawDate;
