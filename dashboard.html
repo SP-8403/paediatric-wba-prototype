@@ -157,6 +157,8 @@ font-weight:bold;">
 
 <script>
 
+<script>
+
 window.addEventListener("DOMContentLoaded", function() {
 
 fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
@@ -172,13 +174,13 @@ document.getElementById("totalRegistrars").innerText = rows[2]?.c[1]?.v || "0";
 document.getElementById("outstandingRegistrars").innerText = rows[3]?.c[1]?.v || "0";
 
 });
-
 fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
 .then(res => res.text())
 .then(text => {
 
 const json = JSON.parse(text.substr(47).slice(0,-2));
 const rows = json.table.rows;
+
 const registrarList = document.getElementById("registrarList");
 
 rows.forEach((row,index)=>{
@@ -212,20 +214,18 @@ font-size:12px;">
 View Portfolio →
 </div>
 `;
+
 card.onclick = function(){
 window.location.href =
 "registrar.html?name=" + encodeURIComponent(name);
 };
 
 registrarList.appendChild(card);
-}
-
-};
-const registrarList = document.getElementById("registrarList");
 
 });
 
 });
+
 
 const searchBox = document.getElementById("searchBox");
 
@@ -242,6 +242,7 @@ card.style.display = text.includes(filter) ? "block" : "none";
 });
 
 });
+</script>
 </script>
 
 </body>
