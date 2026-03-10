@@ -212,13 +212,32 @@ font-size:12px;">
 View Portfolio →
 </div>
 `;
-
 card.onclick = function(){
-window.location.href =
-"registrar.html?name=" + encodeURIComponent(name);
-};
 
-registrarList.appendChild(card);
+if(name === "Alan Horn"){
+
+let password = prompt("Enter password to access Alan Horn's portfolio");
+
+if(password === "horn2026"){
+
+window.location.href =
+"supervisor.html?name=" + encodeURIComponent(name);
+
+} else {
+
+alert("Incorrect password");
+
+}
+
+} else {
+
+window.location.href =
+"supervisor.html?name=" + encodeURIComponent(name);
+
+}
+
+};
+grid.appendChild(card);
 
 });
 
