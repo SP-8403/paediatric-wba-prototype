@@ -169,23 +169,24 @@ document.getElementById("supervisorTable").innerHTML = html;
 
 });
 
- const supervisorSearch = document.getElementById("supervisorSearch");
+      const supervisorSearch = document.getElementById("supervisorSearch");
 
 supervisorSearch.addEventListener("input", function(){
 
 const filter = supervisorSearch.value.toLowerCase();
-const cards = document.querySelectorAll("#supervisorGrid div");
+const rows = document.querySelectorAll("#supervisorTable tr");
 
-cards.forEach(card => {
+rows.forEach(row => {
 
-const text = card.innerText.toLowerCase();
+const text = row.innerText.toLowerCase();
 
-card.style.display =
-text.includes(filter) ? "block" : "none";
+row.style.display =
+text.includes(filter) ? "" : "none";
+
+});
 
 });
 
-});
 
 </script>
 
