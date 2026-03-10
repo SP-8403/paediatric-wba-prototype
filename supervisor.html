@@ -74,6 +74,16 @@ font-weight:bold;
 /* Get supervisor name from URL */
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
+if(selectedSupervisor === "Alan Horn"){
+
+const entered = prompt("Enter password for Alan Horn");
+
+if(entered !== "horn2026"){
+      alert("Incorrect password");
+      window.location.href = "dashboard.html";
+  }
+
+}
 
 /* Update page title */
 if(selectedSupervisor){
