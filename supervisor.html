@@ -24,20 +24,9 @@ border-radius:12px;
 box-shadow:0 6px 20px rgba(0,0,0,0.08);
 ">
 
-<h2 id="pageTitle" style="text-align:center; margin-bottom:10px;">
+<h2 id="pageTitle" style="text-align:center; margin-bottom:30px;">
 Supervisor Assessment Activity
 </h2>
-
-<div style="text-align:center; margin-bottom:30px;">
-<input type="text" id="supervisorSearch"
-placeholder="Search supervisor"
-style="
-padding:12px 20px;
-width:320px;
-border-radius:8px;
-border:1px solid #ccc;
-font-size:14px;">
-</div>
 
 <table style="width:100%; border-collapse:collapse; table-layout:fixed;">
 
@@ -85,13 +74,15 @@ font-weight:bold;
 /* Get supervisor name from URL */
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
-if(selectedSupervisor && supervisor.toLowerCase() !== selectedSupervisor.toLowerCase()) return;
+
+/* Password protection for Alan Horn */
+if(selectedSupervisor && selectedSupervisor.toLowerCase() === "alan horn"){
 
 const entered = prompt("Enter password for Alan Horn");
 
 if(entered !== "horn2026"){
-      alert("Incorrect password");
-      window.location.href = "dashboard.html";
+alert("Incorrect password");
+window.location.href = "dashboard.html";
 }
 
 }
@@ -115,16 +106,15 @@ let html = "";
 
 rows.forEach(row => {
 
-const supervisor = row.c[7]?.v || "—";   // Column H
-const registrar = row.c[2]?.v || "—";    // Column C
-const rawDate = row.c[5]?.v || "—";      // Column F
-const entrustment = row.c[32]?.v || "—"; // Column AG
+const supervisor = row.c[7]?.v || "—";
+const registrar = row.c[2]?.v || "—";
+const rawDate = row.c[5]?.v || "—";
+const entrustment = row.c[32]?.v || "—";
 
 if(registrar === "—") return;
 
 /* Filter by supervisor */
-if(selectedSupervisor && !supervisor?.toLowerCase().includes(selectedSupervisor.toLowerCase())
-) return;
+if(selectedSupervisor && supervisor.toLowerCase() !== selectedSupervisor.toLowerCase()) return;
 
 /* Format date */
 let date = rawDate;
@@ -167,28 +157,9 @@ Level ${entrustment}
 
 });
 
-/* Insert rows into table */
 document.getElementById("supervisorTable").innerHTML = html;
 
-/* Enable search AFTER rows load */
-const supervisorSearch = document.getElementById("supervisorSearch");
-
-if(supervisorSearch){
-
-supervisorSearch.addEventListener("input", function(){
-
-const filter = supervisorSearch.value.toLowerCase();
-const rows = document.querySelectorAll("#supervisorTable tr");
-
-rows.forEach(row => {
-
-const text = row.innerText.toLowerCase();
-row.style.display = text.includes(filter) ? "" : "none";
-
 });
-
-});
-
 
 </script>
 
