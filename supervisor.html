@@ -85,7 +85,7 @@ font-weight:bold;
 /* Get supervisor name from URL */
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
-if(selectedSupervisor && selectedSupervisor.trim().toLowerCase() === "alan horn"){
+if(selectedSupervisor && supervisor.toLowerCase() !== selectedSupervisor.toLowerCase()) return;
 
 const entered = prompt("Enter password for Alan Horn");
 
@@ -189,9 +189,6 @@ row.style.display = text.includes(filter) ? "" : "none";
 
 });
 
-}
-
-});
 
 </script>
 
