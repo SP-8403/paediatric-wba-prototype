@@ -213,13 +213,11 @@ View Portfolio →
 </div>
 `;
 card.onclick = function(){
-
-if(name === "Alan Horn"){
 window.location.href =
-"supervisor.html?name=" + encodeURIComponent(name);
-window.location.href =
-"supervisor.html?name=" + encodeURIComponent(name);
+"registrar.html?name=" + encodeURIComponent(name);
+};
 
+registrarList.appendChild(card);
 }
 
 };
