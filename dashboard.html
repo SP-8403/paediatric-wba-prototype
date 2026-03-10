@@ -12,6 +12,7 @@
   <p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
+<!-- PROGRAMME OVERVIEW -->
 <section style="background:#eef3f8; padding:60px 20px;">
   <h2 style="text-align:center;">EPA 1 – Programme Overview</h2>
 
@@ -23,69 +24,12 @@
     </div>
 
     <div style="background:white; padding:30px; border-radius:12px; width:260px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08);">
-      <h4>Registrars Assessed</h4>
+      <h4>Registrars Assessed EPA 1</h4>
       <p id="registrarsAssessed" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
     </div>
 
   </div>
 </section>
-
-
-<!-- SUPERVISOR DIRECTORY -->
-<section style="text-align:center; margin:50px 0;">
-
-<h3 style="color:#002b5c;">Supervisor Directory</h3>
-
-<p style="max-width:500px;margin:auto;">
-View all supervisors and access individual portfolios.
-</p>
-
-<a href="supervisors.html"
-style="
-display:inline-block;
-margin-top:18px;
-padding:12px 34px;
-background:#002b5c;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-size:15px;
-font-weight:600;
-box-shadow:0 4px 12px rgba(0,0,0,0.15);
-">
-View Supervisors →
-</a>
-
-</section>
-
-
-<!-- SUPERVISOR ACTIVITY -->
-<section style="text-align:center; margin:40px 0 60px 0;">
-
-<h3 style="color:#002b5c;">Supervisor Activity</h3>
-
-<p style="max-width:500px;margin:auto;">
-Review assessment activity submitted by supervisors.
-</p>
-
-<a href="supervisor.html"
-style="
-display:inline-block;
-margin-top:18px;
-padding:12px 34px;
-background:#0f7c82;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-size:15px;
-font-weight:600;
-box-shadow:0 4px 12px rgba(0,0,0,0.15);
-">
-View Activity Dashboard →
-</a>
-
-</section>
-
 
 <!-- REGISTRAR METRICS -->
 <section style="padding:60px 20px; background:#f8fafc;">
@@ -108,6 +52,47 @@ View Activity Dashboard →
 
 </section>
 
+<!-- SUPERVISOR PORTAL -->
+<section style="padding:60px 20px; background:#eef3f8;">
+
+<h2 style="text-align:center; margin-bottom:30px;">Supervisors</h2>
+
+<div style="display:flex; justify-content:center;">
+
+<div onclick="window.location.href='supervisors.html'"
+style="
+background:white;
+padding:30px;
+border-radius:12px;
+width:260px;
+text-align:center;
+box-shadow:0 6px 15px rgba(0,0,0,0.08);
+cursor:pointer;
+transition:all 0.2s ease;
+">
+
+<h4>Supervisor Portal</h4>
+
+<p style="font-size:14px;color:#666;">
+Access supervisor portfolios and activity dashboards.
+</p>
+
+<div style="
+margin-top:12px;
+background:#0f7c82;
+color:white;
+display:inline-block;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;">
+Open →
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 <!-- REGISTRAR SEARCH -->
 <section style="padding:60px 20px; background:#f8fafc;">
@@ -131,7 +116,7 @@ margin:auto;">
 
 </section>
 
-
+<!-- BACK BUTTON -->
 <section style="text-align:center; margin:40px;">
 <a href="index.html"
 style="
@@ -147,14 +132,12 @@ font-weight:bold;">
 </a>
 </section>
 
-
 <footer>
 <p><strong>UCT DPCH Workplace-Based Assessment Prototype v1.0</strong></p>
 <p>Digital Portal Developed by Shakti Pillay</p>
 <p>Department of Paediatrics and Child Health | University of Cape Town</p>
 <p>© 2026</p>
 </footer>
-
 
 <script>
 
@@ -173,7 +156,6 @@ document.getElementById("totalRegistrars").innerText = rows[2]?.c[1]?.v || "0";
 document.getElementById("outstandingRegistrars").innerText = rows[3]?.c[1]?.v || "0";
 
 });
-
 
 fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
 .then(res => res.text())
@@ -225,7 +207,6 @@ registrarList.appendChild(card);
 });
 
 });
-
 
 const searchBox = document.getElementById("searchBox");
 
