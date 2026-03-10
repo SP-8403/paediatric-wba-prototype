@@ -13,7 +13,6 @@
 <p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
-
 <section style="padding:60px 20px; background:#f8fafc;">
 
 <div style="
@@ -25,7 +24,7 @@ border-radius:12px;
 box-shadow:0 6px 20px rgba(0,0,0,0.08);
 ">
 
-<h2 style="text-align:center; margin-bottom:30px;">
+<h2 id="pageTitle" style="text-align:center; margin-bottom:30px;">
 Supervisor Assessment Activity
 </h2>
 
@@ -35,10 +34,10 @@ Supervisor Assessment Activity
 <tr style="background:#002b5c; color:white; text-align:left;">
 
 <th style="padding:12px; width:25%;">Supervisor</th>
-<th style="width:25%;">Registrar</th>
-<th style="width:10%;">EPA</th>
-<th style="width:20%;">Date</th>
-<th style="width:20%;">Entrustment</th>
+<th style="padding:12px; width:25%;">Registrar</th>
+<th style="padding:12px; width:10%;">EPA</th>
+<th style="padding:12px; width:20%;">Date</th>
+<th style="padding:12px; width:20%;">Entrustment</th>
 
 </tr>
 </thead>
@@ -50,7 +49,6 @@ Supervisor Assessment Activity
 </div>
 
 </section>
-
 
 <section style="text-align:center; margin:40px;">
 
@@ -71,9 +69,19 @@ font-weight:bold;
 
 </section>
 
-
 <script>
 
+/* Get supervisor name from URL */
+const params = new URLSearchParams(window.location.search);
+const selectedSupervisor = params.get("name");
+
+/* Update page title */
+if(selectedSupervisor){
+document.getElementById("pageTitle").innerText =
+selectedSupervisor + " – Assessment Activity";
+}
+
+/* Fetch data from Google Sheet */
 fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
 
 .then(res => res.text())
@@ -93,8 +101,10 @@ const entrustment = row.c[32]?.v || "—"; // Column AG
 
 if(registrar === "—") return;
 
+/* Filter by supervisor */
+if(selectedSupervisor && supervisor !== selectedSupervisor) return;
 
-/* Format Google Sheets date */
+/* Format date */
 let date = rawDate;
 
 if(rawDate && rawDate.startsWith("Date")){
@@ -102,45 +112,33 @@ const parts = rawDate.replace("Date(","").replace(")","").split(",");
 date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
 }
 
-
 html += `
 
 <tr style="border-bottom:1px solid #f1f3f5;">
 
-<td style="padding:12px; vertical-align:middle;">
-${supervisor}
-</td>
+<td style="padding:12px;">${supervisor}</td>
 
-<td style="padding:12px; vertical-align:middle;">
+<td style="padding:12px;">
 <a href="registrar.html?name=${encodeURIComponent(registrar)}"
-style="color:#002b5c; font-weight:bold; text-decoration:none;">
+style="color:#002b5c;font-weight:bold;text-decoration:none;">
 ${registrar}
 </a>
 </td>
 
-<td style="padding:12px; vertical-align:middle;">
-EPA 1
-</td>
+<td style="padding:12px;">EPA 1</td>
 
-<td style="padding:12px; vertical-align:middle;">
-${date}
-</td>
+<td style="padding:12px;">${date}</td>
 
-<td style="padding:12px; vertical-align:middle;">
-
+<td style="padding:12px;">
 <span style="
 background:#0f7c82;
 color:white;
 padding:6px 14px;
 border-radius:20px;
 font-size:12px;
-font-weight:bold;
-">
-
+font-weight:bold;">
 Level ${entrustment}
-
 </span>
-
 </td>
 
 </tr>
