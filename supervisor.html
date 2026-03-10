@@ -135,7 +135,6 @@ date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
 }
 
 html += `
-
 <tr style="border-bottom:1px solid #f1f3f5;">
 
 <td style="padding:12px;">${supervisor}</td>
@@ -164,16 +163,17 @@ Level ${entrustment}
 </td>
 
 </tr>
-
 `;
 
 });
 
+/* Insert rows into table */
 document.getElementById("supervisorTable").innerHTML = html;
 
-});
+/* Enable search AFTER rows load */
+const supervisorSearch = document.getElementById("supervisorSearch");
 
-      const supervisorSearch = document.getElementById("supervisorSearch");
+if(supervisorSearch){
 
 supervisorSearch.addEventListener("input", function(){
 
@@ -183,14 +183,15 @@ const rows = document.querySelectorAll("#supervisorTable tr");
 rows.forEach(row => {
 
 const text = row.innerText.toLowerCase();
-
-row.style.display =
-text.includes(filter) ? "" : "none";
+row.style.display = text.includes(filter) ? "" : "none";
 
 });
 
 });
 
+}
+
+});
 
 </script>
 
