@@ -4,6 +4,7 @@
   <title>Programme Dashboard | UCT DPCH WBA</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
@@ -26,13 +27,17 @@
       <p id="registrarsAssessed" style="font-size:36px; font-weight:bold; color:#0f2f4f;">--</p>
     </div>
 
-    </section>
+  </div>
+</section>
 
-  <section style="text-align:center; margin:50px 0;">
+
+<!-- SUPERVISOR DIRECTORY -->
+<section style="text-align:center; margin:50px 0;">
 
 <h3 style="color:#002b5c;">Supervisor Directory</h3>
-<p style="max-width:600px;margin:auto;">
-Browse all supervisors participating in workplace-based assessment and access individual portfolios.
+
+<p style="max-width:500px;margin:auto;">
+View all supervisors and access individual portfolios.
 </p>
 
 <a href="supervisors.html"
@@ -53,14 +58,14 @@ View Supervisors →
 
 </section>
 
-<hr style="max-width:700px;margin:40px auto;border:0;border-top:1px solid #e0e6ed;">
 
-
+<!-- SUPERVISOR ACTIVITY -->
 <section style="text-align:center; margin:40px 0 60px 0;">
 
 <h3 style="color:#002b5c;">Supervisor Activity</h3>
-<p style="max-width:600px;margin:auto;">
-Review programme-level assessment activity submitted by supervisors.
+
+<p style="max-width:500px;margin:auto;">
+Review assessment activity submitted by supervisors.
 </p>
 
 <a href="supervisor.html"
@@ -80,45 +85,11 @@ View Activity Dashboard →
 </a>
 
 </section>
-  <a href="supervisors.html"
-     style="
-     display:inline-block;
-     padding:14px 35px;
-     background:#0f7c82;
-     color:white;
-     text-decoration:none;
-     border-radius:8px;
-     font-size:16px;
-     font-weight:bold;
-     box-shadow:0 4px 10px rgba(0,0,0,0.15);
-     ">
-     View Supervisors →
-  </a>
-</section>
 
-<section style="text-align:center; margin:40px;">
-<h3>Supervisor Oversight</h3>
-<p>View programme-level assessment activity submitted by supervisors.</p>
 
-  
-  <a href="supervisor.html"
-style="
-display:inline-block;
-padding:14px 35px;
-background:#0f7c82;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-size:16px;
-font-weight:bold;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
-">
-    
-Supervisor Activity Dashboard →
-</a>
-</section>
-
+<!-- REGISTRAR METRICS -->
 <section style="padding:60px 20px; background:#f8fafc;">
+
 <h2 style="text-align:center; margin-bottom:30px;">Registrar Portfolio</h2>
 
 <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin-bottom:40px;">
@@ -134,128 +105,141 @@ Supervisor Activity Dashboard →
 </div>
 
 </div>
-  
+
 </section>
-<!-- Registrar Portfolio Section -->
+
+
+<!-- REGISTRAR SEARCH -->
 <section style="padding:60px 20px; background:#f8fafc;">
-  <h2 style="text-align:center; margin-bottom:30px;">Registrar Portfolio</h2>
 
-  <div style="text-align:center; margin-bottom:30px;">
-    <input type="text" id="searchBox"
-      placeholder="Search registrar..."
-      style="padding:12px 20px; width:300px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-  </div>
+<h2 style="text-align:center; margin-bottom:30px;">Registrar Portfolio</h2>
 
-  <div id="registrarList"
-       style="display:grid;
-              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-              gap:20px;
-              max-width:1000px;
-              margin:auto;">
-  </div>
+<div style="text-align:center; margin-bottom:30px;">
+<input type="text" id="searchBox"
+placeholder="Search registrar..."
+style="padding:12px 20px; width:300px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+</div>
+
+<div id="registrarList"
+style="
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap:20px;
+max-width:1000px;
+margin:auto;">
+</div>
+
 </section>
-  
+
+
 <section style="text-align:center; margin:40px;">
-  <a href="index.html"
-     style="display:inline-block;
-            padding:14px 35px;
-            background:#002b5c;
-            color:white;
-            text-decoration:none;
-            border-radius:8px;
-            font-size:16px;
-            font-weight:bold;">
-    ← Back to WBA Portal
-  </a>
+<a href="index.html"
+style="
+display:inline-block;
+padding:14px 35px;
+background:#002b5c;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-size:16px;
+font-weight:bold;">
+← Back to WBA Portal
+</a>
 </section>
+
 
 <footer>
-  <p><strong>UCT DPCH Workplace-Based Assessment Prototype v1.0</strong></p>
-  <p>Digital Portal Developed by Shakti Pillay</p>
-  <p>Department of Paediatrics and Child Health | University of Cape Town</p>
-  <p>© 2026</p>
+<p><strong>UCT DPCH Workplace-Based Assessment Prototype v1.0</strong></p>
+<p>Digital Portal Developed by Shakti Pillay</p>
+<p>Department of Paediatrics and Child Health | University of Cape Town</p>
+<p>© 2026</p>
 </footer>
 
+
 <script>
+
 window.addEventListener("DOMContentLoaded", function() {
 
-  // 1️⃣ FETCH DASHBOARD TOTALS
-  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
-    .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(text.substr(47).slice(0, -2));
-      const rows = json.table.rows;
+fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2044622508")
+.then(res => res.text())
+.then(text => {
 
-      document.getElementById("totalAssessments").innerText = rows[0]?.c[1]?.v || "0";
-      document.getElementById("registrarsAssessed").innerText = rows[1]?.c[1]?.v || "0";
-      document.getElementById("totalRegistrars").innerText = rows[2]?.c[1]?.v || "0";
-      document.getElementById("outstandingRegistrars").innerText = rows[3]?.c[1]?.v || "0";
-    });
+const json = JSON.parse(text.substr(47).slice(0,-2));
+const rows = json.table.rows;
 
-  // 2️⃣ FETCH REGISTRAR LIST
-  fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
-    .then(res => res.text())
-    .then(text => {
+document.getElementById("totalAssessments").innerText = rows[0]?.c[1]?.v || "0";
+document.getElementById("registrarsAssessed").innerText = rows[1]?.c[1]?.v || "0";
+document.getElementById("totalRegistrars").innerText = rows[2]?.c[1]?.v || "0";
+document.getElementById("outstandingRegistrars").innerText = rows[3]?.c[1]?.v || "0";
 
-      const json = JSON.parse(text.substr(47).slice(0, -2));
-      const rows = json.table.rows;
-      const registrarList = document.getElementById("registrarList");
+});
 
-      rows.forEach((row, index) => {
-        if (index === 0) return;
 
-        const name = row.c[0]?.v;
-        if (!name) return;
+fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=2012183446")
+.then(res => res.text())
+.then(text => {
 
-        const card = document.createElement("div");
-        card.style.background = "white";
-        card.style.padding = "20px";
-        card.style.borderRadius = "12px";
-        card.style.boxShadow = "0 6px 15px rgba(0,0,0,0.08)";
-        card.style.textAlign = "center";
-        card.style.cursor = "pointer";
-        card.style.fontWeight = "bold";
-        card.style.color = "#002b5c";
-        card.style.transition = "all 0.2s ease";
-  card.onmouseover = () => card.style.transform = "translateY(-4px)";
-  card.onmouseout = () => card.style.transform = "translateY(0)";
+const json = JSON.parse(text.substr(47).slice(0,-2));
+const rows = json.table.rows;
+const registrarList = document.getElementById("registrarList");
 
-        card.innerHTML = `
-    <div style="font-size:16px;">${name}</div>
-    <div style="
-    margin-top:10px;
-    background:#002b5c;
-    color:white;
-    display:inline-block;
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:12px;">
-    View Portfolio →
-  </div>
+rows.forEach((row,index)=>{
+
+if(index===0) return;
+
+const name = row.c[0]?.v;
+if(!name) return;
+
+const card = document.createElement("div");
+
+card.style.background="white";
+card.style.padding="20px";
+card.style.borderRadius="12px";
+card.style.boxShadow="0 6px 15px rgba(0,0,0,0.08)";
+card.style.textAlign="center";
+card.style.cursor="pointer";
+card.style.fontWeight="bold";
+card.style.color="#002b5c";
+
+card.innerHTML = `
+<div style="font-size:16px;">${name}</div>
+<div style="
+margin-top:10px;
+background:#002b5c;
+color:white;
+display:inline-block;
+padding:5px 10px;
+border-radius:20px;
+font-size:12px;">
+View Portfolio →
+</div>
 `;
 
-        card.onclick = function() {
-          window.location.href =
-            "registrar.html?name=" + encodeURIComponent(name);
-        };
+card.onclick = function(){
+window.location.href =
+"registrar.html?name=" + encodeURIComponent(name);
+};
 
-        registrarList.appendChild(card);
-      });
+registrarList.appendChild(card);
 
-    });
+});
 
-  // 3️⃣ SEARCH
-  const searchBox = document.getElementById("searchBox");
+});
 
-  searchBox.addEventListener("input", function() {
-    const filter = searchBox.value.toLowerCase();
-    const cards = document.querySelectorAll("#registrarList div");
 
-    cards.forEach(card => {
-      const text = card.innerText.toLowerCase();
-      card.style.display = text.includes(filter) ? "block" : "none";
-    });
-  });
+const searchBox = document.getElementById("searchBox");
+
+searchBox.addEventListener("input", function(){
+
+const filter = searchBox.value.toLowerCase();
+const cards = document.querySelectorAll("#registrarList div");
+
+cards.forEach(card=>{
+const text = card.innerText.toLowerCase();
+card.style.display = text.includes(filter) ? "block" : "none";
+});
+
+});
 
 });
 </script>
