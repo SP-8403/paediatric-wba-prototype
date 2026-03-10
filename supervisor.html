@@ -32,13 +32,11 @@ Supervisor Assessment Activity
 
 <thead>
 <tr style="background:#002b5c; color:white; text-align:left;">
-
 <th style="padding:12px; width:25%;">Supervisor</th>
 <th style="padding:12px; width:25%;">Registrar</th>
 <th style="padding:12px; width:10%;">EPA</th>
 <th style="padding:12px; width:20%;">Date</th>
 <th style="padding:12px; width:20%;">Entrustment</th>
-
 </tr>
 </thead>
 
@@ -70,18 +68,19 @@ font-weight:bold;
 </section>
 
 <script>
-<script>
 
 /* Get supervisor name from URL */
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
-if(selectedSupervisor && selectedSupervisor.trim().toLowerCase() === "alan horn"){
+
+/* Password protection for Alan Horn */
+if(selectedSupervisor && selectedSupervisor.toLowerCase() === "alan horn"){
 
 const entered = prompt("Enter password for Alan Horn");
 
 if(entered !== "horn2026"){
-      alert("Incorrect password");
-      window.location.href = "dashboard.html";
+alert("Incorrect password");
+window.location.href = "dashboard.html";
 }
 
 }
@@ -105,26 +104,22 @@ let html = "";
 
 rows.forEach(row => {
 
-const supervisor = row.c[7]?.v || "—";   // Column H
-const registrar = row.c[2]?.v || "—";    // Column C
-const rawDate = row.c[5]?.v || "—";      // Column F
-const entrustment = row.c[32]?.v || "—"; // Column AG
+const supervisor = row.c[7]?.v || "";
+const registrar = row.c[2]?.v || "";
+const rawDate = row.c[5]?.v || "";
+const entrustment = row.c[32]?.v || "";
 
-if(registrar === "—") return;
+if(!registrar) return;
 
 /* Filter by supervisor */
-if(selectedSupervisor && !supervisor?.toLowerCase().includes(selectedSupervisor.toLowerCase())
-) return;
+if(selectedSupervisor && !supervisor.toLowerCase().includes(selectedSupervisor.toLowerCase())) return;
 
-/* Format date */
+/* Format Google date */
 let date = rawDate;
 
 if(rawDate && rawDate.startsWith("Date")){
 const parts = rawDate.replace("Date(","").replace(")","").split(",");
-date = ${parts[2]}/${parseInt(parts[1])+1}/${parts[0]};
-}
-
-html += `
+date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
 }
 
 html += `
@@ -167,5 +162,4 @@ document.getElementById("supervisorTable").innerHTML = html;
 </script>
 
 </body>
-
 </html>
