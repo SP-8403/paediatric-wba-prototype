@@ -215,22 +215,8 @@ View Portfolio →
 card.onclick = function(){
 
 if(name === "Alan Horn"){
-
-let password = prompt("Enter password to access Alan Horn's portfolio");
-
-if(password === "horn2026"){
-
 window.location.href =
 "supervisor.html?name=" + encodeURIComponent(name);
-
-} else {
-
-alert("Incorrect password");
-
-}
-
-} else {
-
 window.location.href =
 "supervisor.html?name=" + encodeURIComponent(name);
 
