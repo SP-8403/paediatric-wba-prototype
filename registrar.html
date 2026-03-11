@@ -1,207 +1,229 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registrar Portfolio | UCT DPCH WBA</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Registrar Portfolio | UCT DPCH WBA</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
 <header>
-  <h1>Registrar EPA Portfolio</h1>
-  <p>UCT Department of Paediatrics and Child Health</p>
+<h1>Registrar EPA Portfolio</h1>
+<p>UCT Department of Paediatrics and Child Health</p>
 </header>
 
 <section style="padding:40px; max-width:1000px; margin:auto;">
-  
-  <h2 id="registrarName"></h2>
 
-  <!-- Entrustment Graph -->
-  <canvas id="entrustmentChart" height="100" style="margin-bottom:40px;"></canvas>
+<h2 id="registrarName"></h2>
 
-  <!-- EPA Cards -->
-  <div id="assessmentList"></div>
+<canvas id="entrustmentChart" height="100" style="margin-bottom:40px;"></canvas>
+
+<div id="assessmentList"></div>
 
 </section>
 
 <section style="text-align:center; margin:40px;">
-  <a href="dashboard.html"
-     style="display:inline-block;
-            padding:12px 30px;
-            background:#002b5c;
-            color:white;
-            text-decoration:none;
-            border-radius:8px;
-            font-weight:bold;">
-    ← Back to Dashboard
-  </a>
+<a href="dashboard.html"
+style="
+display:inline-block;
+padding:12px 30px;
+background:#002b5c;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+">
+← Back to Dashboard
+</a>
 </section>
 
 <script>
-window.addEventListener("DOMContentLoaded", function() {
 
-  const params = new URLSearchParams(window.location.search);
-  const selectedName = params.get("name") || "Unknown Registrar";
+window.addEventListener("DOMContentLoaded", function(){
 
-  document.getElementById("registrarName").innerText =
-    selectedName + " – EPA Portfolio";
+const params = new URLSearchParams(window.location.search);
+const selectedName = params.get("name") || "";
 
-  const container = document.getElementById("assessmentList");
+document.getElementById("registrarName").innerText =
+selectedName + " – EPA Portfolio";
 
-  function formatGSDate(raw) {
-    if (!raw || !raw.startsWith("Date")) return "–";
-    const parts = raw.replace("Date(", "").replace(")", "").split(",");
-    return `${parts[2]}/${parseInt(parts[1]) + 1}/${parts[0]}`;
-  }
+const container = document.getElementById("assessmentList");
 
-  function fetchEPA(spreadsheetId, gid, title, entrustmentColumnIndex) {
-    return fetch(
-      `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&gid=${gid}`
-    )
-    .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(text.substr(47).slice(0, -2));
-      return {
-        title,
-        rows: json.table.rows,
-        entrustmentColumnIndex
-      };
-    });
-  }
+function formatGSDate(raw){
+if(!raw || !raw.startsWith("Date")) return "–";
+const parts = raw.replace("Date(","").replace(")","").split(",");
+return `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
+}
 
-  Promise.all([
+function fetchEPA(sheetID,gid,title,columnIndex){
 
-    // EPA 1
-    fetchEPA(
-      "16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk",
-      25819344,
-      "EPA 1 – Structured SBAR Handover",
-      32
-    ),
+return fetch(`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&gid=${gid}`)
 
-    // EPA 2
-    fetchEPA(
-      "1N6yqaBddbjXwK2b_nRlC7fycHSdGVBUt88083-YDJtw",
-      287751304,
-      "EPA 2 – Examination of the Newborn",
-      41
-    )
+.then(res=>res.text())
 
-  ]).then(results => {
+.then(text=>{
 
-    let overallHTML = "";
-    let entrustmentData = [];
+const json = JSON.parse(text.substr(47).slice(0,-2));
 
-    results.forEach(epa => {
+return{
+title:title,
+rows:json.table.rows,
+columnIndex:columnIndex
+}
 
-      let sectionHTML = "";
-      let count = 0;
+})
 
-      epa.rows.forEach(row => {
-        const traineeName = row.c[2]?.v;
-      const rawDate = row.c[5]?.v;
-      const hospital = row.c[11]?.v;
-      const entrustmentText = row.c[epa.entrustmentColumnIndex]?.v || "";
-      const levelMatch = entrustmentText.match(/\d+/);
-      const levelNumber = levelMatch ? parseInt(levelMatch[0]) : null;
+}
 
-      if (
-      traineeName &&
-      traineeName.trim().toLowerCase() === selectedName.trim().toLowerCase()
-      ) {
-        count++;
+Promise.all([
 
-        if (levelNumber) {
-        entrustmentData.push(levelNumber);
-        }
+fetchEPA(
+"16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk",
+25819344,
+"EPA 1 – Structured SBAR Handover",
+32
+),
 
-  const formattedDate = formatGSDate(rawDate);
+fetchEPA(
+"1N6yqaBddbjXwK2b_nRlC7fycHSdGVBUt88083-YDJtw",
+287751304,
+"EPA 2 – Examination of the Newborn",
+41
+)
 
-          sectionHTML += `
-            <div style="
-              background:white;
-              padding:22px;
-              margin-bottom:18px;
-              border-radius:10px;
-              box-shadow:0 6px 18px rgba(0,0,0,0.07);
-            ">
+])
 
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-weight:bold; color:#002b5c;">
-                  Observation ${count}
-                </div>
+.then(results=>{
 
-                <div style="
-                  background:#002b5c;
-                  color:white;
-                  padding:6px 12px;
-                  border-radius:20px;
-                  font-size:12px;
-                ">
-                   ${levelNumber || "–"}
-                </div>
-              </div>
+let overallHTML="";
+let entrustmentData=[];
 
-              <div style="margin-top:15px;">
-                <strong>Date:</strong> ${formattedDate}<br>
-                <strong>Hospital:</strong> ${hospital || "–"}
-              </div>
+results.forEach(epa=>{
 
-            </div>
-          `;
-        }
+let sectionHTML="";
+let count=0;
 
-      });
+epa.rows.forEach(row=>{
 
-      if (count > 0) {
-        overallHTML += `
-          <h3 style="margin-top:40px; color:#002b5c;">
-            ${epa.title}
-          </h3>
-          ${sectionHTML}
-        `;
-      }
+const traineeName = row.c[2]?.v;
+const rawDate = row.c[5]?.v;
+const hospital = row.c[11]?.v;
 
-    });
+const entrustmentText = row.c[epa.columnIndex]?.v || "";
+const match = entrustmentText.match(/\d+/);
+const level = match ? parseInt(match[0]) : null;
 
-    if (!overallHTML) {
-      overallHTML = "<p>No EPA observations recorded yet for this registrar.</p>";
-    }
+if(!traineeName) return;
 
-    container.innerHTML = overallHTML;
+if(traineeName.trim().toLowerCase() === selectedName.trim().toLowerCase()){
 
-    // Build Chart
-    if (entrustmentData.length > 0) {
+count++;
 
-      new Chart(document.getElementById("entrustmentChart"), {
-        type: 'line',
-        data: {
-          labels: entrustmentData.map((_, i) => "Obs " + (i+1)),
-          datasets: [{
-            label: 'Entrustment Level',
-            data: entrustmentData,
-            borderColor: '#002b5c',
-            backgroundColor: 'rgba(0,43,92,0.1)',
-            tension: 0.3
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              min: 1,
-              max: 5,
-              ticks: { stepSize: 1 }
-            }
-          }
-        }
-      });
+if(level) entrustmentData.push(level);
 
-    }
+const formattedDate = formatGSDate(rawDate);
 
-  });
+sectionHTML += `
+
+<div style="
+background:white;
+padding:22px;
+margin-bottom:18px;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.07);
+">
+
+<div style="display:flex; justify-content:space-between; align-items:center;">
+
+<div style="font-weight:bold;color:#002b5c;">
+Observation ${count}
+</div>
+
+<div style="
+background:#002b5c;
+color:white;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+">
+${level || "–"}
+</div>
+
+</div>
+
+<div style="margin-top:15px;">
+<strong>Date:</strong> ${formattedDate}<br>
+<strong>Hospital:</strong> ${hospital || "–"}
+</div>
+
+</div>
+
+`;
+
+}
 
 });
+
+if(count>0){
+
+overallHTML += `
+
+<h3 style="margin-top:40px;color:#002b5c;">
+${epa.title}
+</h3>
+
+${sectionHTML}
+
+`;
+
+}
+
+})
+
+if(!overallHTML){
+overallHTML = "<p>No EPA observations recorded yet for this registrar.</p>";
+}
+
+container.innerHTML = overallHTML;
+
+/* Chart */
+
+if(entrustmentData.length>0){
+
+new Chart(document.getElementById("entrustmentChart"),{
+
+type:"line",
+
+data:{
+labels:entrustmentData.map((_,i)=>"Obs "+(i+1)),
+datasets:[{
+label:"Entrustment Level",
+data:entrustmentData,
+borderColor:"#002b5c",
+backgroundColor:"rgba(0,43,92,0.1)",
+tension:0.3
+}]
+},
+
+options:{
+scales:{
+y:{
+min:1,
+max:5,
+ticks:{stepSize:1}
+}
+}
+}
+
+})
+
+}
+
+})
+
+})
+
 </script>
 
 </body>
