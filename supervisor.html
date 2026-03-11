@@ -109,7 +109,7 @@ const registrar = row.c[2]?.v || "";
 const rawDate = row.c[5]?.v || "";
 const entrustmentText = row.c[32]?.v || "";
 const levelMatch = entrustmentText.match(/\d+/);
-const entrustment = levelMatch ? `Level ${levelMatch[0]}` : "—";
+const entrustment = levelMatch ? levelMatch[0] : "—";
 
 if(!registrar) return;
 
