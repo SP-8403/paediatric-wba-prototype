@@ -103,21 +103,22 @@ window.addEventListener("DOMContentLoaded", function() {
         const traineeName = row.c[2]?.v;
         const rawDate = row.c[5]?.v;
         const hospital = row.c[11]?.v;
-        const globalEntrustment = row.c[epa.entrustmentColumnIndex]?.v;
+        const entrustmentText = row.c[epa.entrustmentColumnIndex]?.v || "";
+        const levelNumber = parseInt(entrustmentText.match(/\d+/));
 
         if (
-          traineeName &&
-          traineeName.trim().toLowerCase() ===
-          selectedName.trim().toLowerCase()
+        traineeName &&
+        traineeName.trim().toLowerCase() ===
+        selectedName.trim().toLowerCase()
         ) {
 
-          count++;
+        count++;
 
-          if (globalEntrustment) {
-            entrustmentData.push(parseInt(globalEntrustment));
-          }
+        if (levelNumber) {
+        entrustmentData.push(levelNumber);
+        }
 
-          const formattedDate = formatGSDate(rawDate);
+  const formattedDate = formatGSDate(rawDate);
 
           sectionHTML += `
             <div style="
