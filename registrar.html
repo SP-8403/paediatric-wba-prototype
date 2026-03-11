@@ -189,17 +189,17 @@ container.innerHTML = overallHTML;
 
 /* Chart */
 
-if(entrustmentData.length>0){
+if(entrustmentData.length > 0){
 
 new Chart(document.getElementById("entrustmentChart"),{
 
 type:"line",
 
 data:{
-labels:entrustmentData.map((_,i)=>"Obs "+(i+1)),
+labels: entrustmentData.map((_,i)=>"Obs "+(i+1)),
 datasets:[{
 label:"Entrustment Level",
-data:entrustmentData,
+data: entrustmentData,
 borderColor:"#002b5c",
 backgroundColor:"rgba(0,43,92,0.1)",
 tension:0.3
@@ -211,14 +211,18 @@ scales:{
 y:{
 min:1,
 max:5,
-ticks:{stepSize:1}
+ticks:{ stepSize:1 }
+}
+}
 }
 
 });
 
-});
+}
 
-});
+});   // closes Promise.all
+
+});   // closes DOMContentLoaded
 
 </script>
 
