@@ -107,7 +107,9 @@ rows.forEach(row => {
 const supervisor = row.c[7]?.v || "";
 const registrar = row.c[2]?.v || "";
 const rawDate = row.c[5]?.v || "";
-const entrustment = row.c[32]?.v || "";
+const entrustmentText = row.c[32]?.v || "";
+const levelNumber = parseInt(entrustmentText.match(/\d+/));
+const entrustment = levelNumber ? `Level ${levelNumber}` : "—";
 
 if(!registrar) return;
 
