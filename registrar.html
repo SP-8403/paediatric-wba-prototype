@@ -106,11 +106,10 @@ window.addEventListener("DOMContentLoaded", function() {
         const globalEntrustment = row.c[epa.entrustmentColumnIndex]?.v;
 
         if (
-          traineeName &&
-          traineeName.trim().toLowerCase() ===
-          selectedName.trim().toLowerCase()
+        traineeName &&
+        traineeName.toLowerCase().includes(selectedName.toLowerCase())
         ) {
-
+        
           count++;
 
           if (globalEntrustment) {
