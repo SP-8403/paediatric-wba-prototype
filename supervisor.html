@@ -108,7 +108,7 @@ const supervisor = row.c[7]?.v || "";
 const registrar = row.c[2]?.v || "";
 const rawDate = row.c[5]?.v || "";
 const entrustmentText = row.c[32]?.v || "";
-const levelNumber = parseInt(entrustmentText.match(/\d+/));
+const levelNumber = parseInt((entrustmentText.match(/\d+/) || [])[0]);
 const entrustment = levelNumber ? `Level ${levelNumber}` : "—";
 
 if(!registrar) return;
