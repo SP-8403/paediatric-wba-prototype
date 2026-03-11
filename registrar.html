@@ -99,13 +99,6 @@ window.addEventListener("DOMContentLoaded", function() {
       let count = 0;
 
       epa.rows.forEach(row => {
-
-        const traineeName = row.c[2]?.v;
-        const rawDate = row.c[5]?.v;
-        const hospital = row.c[11]?.v;
-        const entrustmentText = row.c[epa.entrustmentColumnIndex]?.v || "";
-        const levelMatch = entrustmentText.match(/\d+/);
-        const levelNumber = levelMatch ? parseInt(levelMatch[0]) : null;
         const traineeName = row.c[2]?.v;
       const rawDate = row.c[5]?.v;
       const hospital = row.c[11]?.v;
