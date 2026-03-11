@@ -106,11 +106,10 @@ window.addEventListener("DOMContentLoaded", function() {
       const levelMatch = entrustmentText.match(/\d+/);
       const levelNumber = levelMatch ? parseInt(levelMatch[0]) : null;
 
-if (
-traineeName &&
-traineeName.toLowerCase().includes(selectedName.toLowerCase())
-) {
-
+      if (
+      traineeName &&
+      traineeName.trim().toLowerCase() === selectedName.trim().toLowerCase()
+      ) {
         count++;
 
         if (levelNumber) {
