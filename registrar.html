@@ -104,7 +104,8 @@ window.addEventListener("DOMContentLoaded", function() {
         const rawDate = row.c[5]?.v;
         const hospital = row.c[11]?.v;
         const entrustmentText = row.c[epa.entrustmentColumnIndex]?.v || "";
-        const levelNumber = parseInt(entrustmentText.match(/\d+/));
+        const levelMatch = entrustmentText.match(/\d+/);
+        const levelNumber = levelMatch ? parseInt(levelMatch[0]) : null;
 
         if (
         traineeName &&
