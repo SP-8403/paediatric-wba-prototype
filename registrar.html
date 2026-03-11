@@ -111,8 +111,12 @@ const rawDate = row.c[5]?.v;
 const hospital = row.c[11]?.v;
 
 const entrustmentText = row.c[epa.columnIndex]?.v || "";
+let level = null;
+
 const match = entrustmentText.match(/\d+/);
-const level = match ? parseInt(match[0]) : null;
+if (match) {
+  level = parseInt(match[0]);
+}
 
 if(!traineeName) return;
 
