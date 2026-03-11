@@ -116,7 +116,7 @@ const level = match ? parseInt(match[0]) : null;
 
 if(!traineeName) return;
 
-if(traineeName.trim().toLowerCase() === selectedName.trim().toLowerCase()){
+if(traineeName.toLowerCase().includes(selectedName.toLowerCase())){
 
 count++;
 
