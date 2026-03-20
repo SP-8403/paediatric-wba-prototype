@@ -70,112 +70,102 @@ font-weight:bold;
 <script>
 
 /* Get supervisor name from URL */
-}
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
 
-/* Alan Horn */
-if (selectedSupervisor && selectedSupervisor.toLowerCase() === "alan horn") {
+/* Access control */
+if (selectedSupervisor) {
 
-  const entered = prompt("Enter password for Alan Horn");
+  if (selectedSupervisor.toLowerCase() === "alan horn") {
 
-  if (entered !== "horn2026") {
-    alert("Incorrect password");
+    const entered = prompt("Enter password for Alan Horn");
+    if (entered !== "horn2026") {
+      alert("Incorrect password");
+      window.location.href = "dashboard.html";
+    }
+
+  } else if (selectedSupervisor.toLowerCase() === "michael harrison") {
+
+    const entered = prompt("Enter password for Michael Harrison");
+    if (entered !== "MH") {
+      alert("Incorrect password");
+      window.location.href = "dashboard.html";
+    }
+
+  } else {
+    alert("Access restricted for demonstration");
     window.location.href = "dashboard.html";
   }
 
 }
 
-/* Michael Harrison */
-else if (selectedSupervisor && selectedSupervisor.toLowerCase() === "michael harrison") {
-
-  const entered = prompt("Enter password for Michael Harrison");
-
-  if (entered !== "MH") {
-    alert("Incorrect password");
-    window.location.href = "dashboard.html";
-  }
-
+/* Update title */
+if (selectedSupervisor) {
+  document.getElementById("pageTitle").innerText =
+    selectedSupervisor + " – Assessment Activity";
 }
 
-/* Everyone else BLOCKED */
-else {
-  alert("Supervisor portfolios are restricted for this demonstration.");
-  window.location.href = "dashboard.html";
-}
-
-/* Update page title */
-if(selectedSupervisor){
-document.getElementById("pageTitle").innerText =
-selectedSupervisor + " – Assessment Activity";
-}
-
-/* Fetch data from Google Sheet */
+/* Fetch data */
 fetch("https://docs.google.com/spreadsheets/d/16a8w-y1XCZ-1PcGCJQtW-14WO6IClLOtU0zgykvSCgk/gviz/tq?tqx=out:json&gid=25819344")
 
 .then(res => res.text())
 .then(text => {
 
-const json = JSON.parse(text.substr(47).slice(0,-2));
-const rows = json.table.rows;
+  const json = JSON.parse(text.substr(47).slice(0,-2));
+  const rows = json.table.rows;
 
-let html = "";
+  let html = "";
 
-rows.forEach(row => {
+  rows.forEach(row => {
 
-const supervisor = row.c[7]?.v || "";
-const registrar = row.c[2]?.v || "";
-const rawDate = row.c[5]?.v || "";
-const entrustmentText = row.c[32]?.v || "";
-const levelMatch = entrustmentText.match(/\d+/);
-const entrustment = levelMatch ? levelMatch[0] : "—";
+    const supervisor = row.c[7]?.v || "";
+    const registrar = row.c[2]?.v || "";
+    const rawDate = row.c[5]?.v || "";
+    const entrustmentText = row.c[32]?.v || "";
+    const levelMatch = entrustmentText.match(/\d+/);
+    const entrustment = levelMatch ? levelMatch[0] : "—";
 
-if(!registrar) return;
+    if (!registrar) return;
 
-/* Filter by supervisor */
-if(selectedSupervisor && !supervisor.toLowerCase().includes(selectedSupervisor.toLowerCase())) return;
+    if (selectedSupervisor &&
+        !supervisor.toLowerCase().includes(selectedSupervisor.toLowerCase())) return;
 
-/* Format Google date */
-let date = rawDate;
+    let date = rawDate;
 
-if(rawDate && rawDate.startsWith("Date")){
-const parts = rawDate.replace("Date(","").replace(")","").split(",");
-date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
-}
+    if (rawDate && rawDate.startsWith("Date")) {
+      const parts = rawDate.replace("Date(","").replace(")","").split(",");
+      date = `${parts[2]}/${parseInt(parts[1])+1}/${parts[0]}`;
+    }
 
-html += `
-<tr style="border-bottom:1px solid #f1f3f5;">
+    html += `
+    <tr style="border-bottom:1px solid #f1f3f5;">
+      <td style="padding:12px;">${supervisor}</td>
 
-<td style="padding:12px;">${supervisor}</td>
+      <td style="padding:12px;">
+        <span style="color:#9ca3af; font-weight:bold;">
+          ${registrar}
+        </span>
+      </td>
 
-<td style="padding:12px;">
-<span style="color:#9ca3af; font-weight:bold;">
-${registrar}
-</span>
-</td>
+      <td style="padding:12px;">EPA 1</td>
+      <td style="padding:12px;">${date}</td>
 
-<td style="padding:12px;">EPA 1</td>
+      <td style="padding:12px;">
+        <span style="
+          background:#0f7c82;
+          color:white;
+          padding:6px 14px;
+          border-radius:20px;
+          font-size:12px;
+          font-weight:bold;">
+          Level ${entrustment}
+        </span>
+      </td>
+    </tr>
+    `;
+  });
 
-<td style="padding:12px;">${date}</td>
-
-<td style="padding:12px;">
-<span style="
-background:#0f7c82;
-color:white;
-padding:6px 14px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;">
-Level ${entrustment}
-</span>
-</td>
-
-</tr>
-`;
-
-});
-
-document.getElementById("supervisorTable").innerHTML = html;
+  document.getElementById("supervisorTable").innerHTML = html;
 
 });
 
