@@ -74,9 +74,14 @@ const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
 
 /* Access control */
+const params = new URLSearchParams(window.location.search);
+const selectedSupervisor = params.get("name");
+
 if (selectedSupervisor) {
 
-  if (selectedSupervisor.toLowerCase() === "alan horn") {
+  const name = selectedSupervisor.trim().toLowerCase();
+
+  if (name.includes("alan horn")) {
 
     const entered = prompt("Enter password for Alan Horn");
     if (entered !== "horn2026") {
@@ -84,7 +89,7 @@ if (selectedSupervisor) {
       window.location.href = "dashboard.html";
     }
 
-  } else if (selectedSupervisor.toLowerCase() === "michael harrison") {
+  } else if (name.includes("michael harrison")) {
 
     const entered = prompt("Enter password for Michael Harrison");
     if (entered !== "MH") {
@@ -93,11 +98,11 @@ if (selectedSupervisor) {
     }
 
   } else {
+
     alert("Access restricted for demonstration");
     window.location.href = "dashboard.html";
-  }
 
-}
+  }
 
 /* Update title */
 if (selectedSupervisor) {
