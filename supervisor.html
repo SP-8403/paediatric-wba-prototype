@@ -68,24 +68,40 @@ font-weight:bold;
 </section>
 
 <script>
-// 🔒 DEMO LOCK
-alert("Supervisor portfolios are restricted for this demonstration.");
-window.location.href = "dashboard.html";
 
 /* Get supervisor name from URL */
+}
 const params = new URLSearchParams(window.location.search);
 const selectedSupervisor = params.get("name");
 
-/* Password protection for Alan Horn */
-if(selectedSupervisor && selectedSupervisor.toLowerCase() === "alan horn"){
+/* Alan Horn */
+if (selectedSupervisor && selectedSupervisor.toLowerCase() === "alan horn") {
 
-const entered = prompt("Enter password for Alan Horn");
+  const entered = prompt("Enter password for Alan Horn");
 
-if(entered !== "horn2026"){
-alert("Incorrect password");
-window.location.href = "dashboard.html";
+  if (entered !== "horn2026") {
+    alert("Incorrect password");
+    window.location.href = "dashboard.html";
+  }
+
 }
 
+/* Michael Harrison */
+else if (selectedSupervisor && selectedSupervisor.toLowerCase() === "michael harrison") {
+
+  const entered = prompt("Enter password for Michael Harrison");
+
+  if (entered !== "MH") {
+    alert("Incorrect password");
+    window.location.href = "dashboard.html";
+  }
+
+}
+
+/* Everyone else BLOCKED */
+else {
+  alert("Supervisor portfolios are restricted for this demonstration.");
+  window.location.href = "dashboard.html";
 }
 
 /* Update page title */
