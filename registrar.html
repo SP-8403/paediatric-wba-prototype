@@ -46,6 +46,8 @@ window.addEventListener("DOMContentLoaded", function() {
 
   const params = new URLSearchParams(window.location.search);
   const selectedName = params.get("name") || "Unknown Registrar";
+  alert("Access to registrar portfolios is restricted for this demo.");
+window.location.href = "dashboard.html";
 
   document.getElementById("registrarName").innerText =
     selectedName + " – EPA Portfolio";
